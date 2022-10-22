@@ -56,17 +56,19 @@ class ShoeListFragment : Fragment() {
         // add view model
         viewModel = ViewModelProvider(requireActivity()).get(SharedViewModel::class.java)
         // initialize the card
-        card = AddCard(this.requireContext()).view
 
         //adding the data to the Card
 
 
         viewModel.list.observe(requireActivity() , Observer {
-                val card = ShoeCardBinding.inflate(LayoutInflater.from(this.requireContext()))
+                var card = ShoeCardBinding.inflate(LayoutInflater.from(this.requireContext()))
                 binding.linearLayoutContainer.removeAllViews()
                 for (shoe in it) {
-                    card.shoeName.text = shoe.name
-                    card.sizeTextCard.text = shoe.size.toString()
+                    card = AddCard(this.requireContext()).view
+                    card.shoeName.text = "Name : ${shoe.name}"
+                    card.description.text = "Description : ${shoe.description}"
+                    card.brandTextCard.text = "Brand : ${shoe.company}"
+                    card.sizeTextCard.text = "Size : ${shoe.size}"
                     binding.linearLayoutContainer.addView(card.root)
                 }
         })
