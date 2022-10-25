@@ -16,6 +16,7 @@ import androidx.navigation.ui.NavigationUI
 import com.udacity.shoestore.R
 import com.udacity.shoestore.databinding.FragmentShoeListBinding
 import com.udacity.shoestore.databinding.ShoeCardBinding
+import com.udacity.shoestore.models.Shoe
 import com.udacity.shoestore.screens.add_card.AddCard
 import com.udacity.shoestore.screens.details.SharedViewModel
 import kotlinx.android.synthetic.main.shoe_card.view.*
@@ -40,7 +41,7 @@ class ShoeListFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = DataBindingUtil.inflate(inflater , R.layout.fragment_shoe_list , container , false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_shoe_list, container, false)
         // Inflate the layout for this fragment
         return binding.root
     }
@@ -55,25 +56,22 @@ class ShoeListFragment : Fragment() {
 
         // add view model
         viewModel = ViewModelProvider(requireActivity()).get(SharedViewModel::class.java)
-        // initialize the card
-
-        //adding the data to the Card
 
 
-        viewModel.list.observe(requireActivity() , Observer {
-                var card = ShoeCardBinding.inflate(LayoutInflater.from(this.requireContext()))
-                binding.linearLayoutContainer.removeAllViews()
-                for (shoe in it) {
-                    card = AddCard(this.requireContext()).view
-                    card.shoeName.text = "Name : ${shoe.name}"
-                    card.description.text = "Description : ${shoe.description}"
-                    card.brandTextCard.text = "Brand : ${shoe.company}"
-                    card.sizeTextCard.text = "Size : ${shoe.size}"
-                    binding.linearLayoutContainer.addView(card.root)
-                }
+
+        viewModel.list.observe(requireActivity(), Observer {
+            binding.linearLayoutContainer.removeAllViews()
+            for (shoe in it) {
+                card = AddCard(this.requireContext()).view
+                card.shoeName.text = "Name : ${shoe.name}"
+                card.description.text = "Description : ${shoe.description}"
+                card.brandTextCard.text = "Brand : ${shoe.company}"
+                card.sizeTextCard.text = "Size : ${shoe.size}"
+                binding.linearLayoutContainer.addView(card.root)
+            }
         })
-        Log.i( "Adham","List size from shoe list${viewModel.list.value?.size}")
-        Log.i("Adham" , "number of child ${binding.linearLayoutContainer.childCount}")
+        Log.i("Adham", "List size from shoe list${viewModel.list.value?.size}")
+        Log.i("Adham", "number of child ${binding.linearLayoutContainer.childCount}")
         binding.addBtn.setOnClickListener {
             val action = ShoeListFragmentDirections.actionShoeListFragmentToMakeShoeFragment()
             navController.navigate(action)
@@ -82,11 +80,6 @@ class ShoeListFragment : Fragment() {
 
 
     }
-
-
-
-
-
 
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

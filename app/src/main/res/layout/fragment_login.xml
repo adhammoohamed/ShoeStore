@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <!--  constraint layout to add view to avoid nested design  -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/login1Fragment"
         android:layout_width="match_parent"

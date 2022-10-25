@@ -7,17 +7,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.udacity.shoestore.R
 import com.udacity.shoestore.databinding.FragmentMakeShoeBinding
+import com.udacity.shoestore.models.Shoe
 
 class ShoeDetailsFragment : Fragment() {
     private lateinit var binding: FragmentMakeShoeBinding
     private lateinit var navController: NavController
 
-    private lateinit var viewModel :SharedViewModel
+    private lateinit var viewModel: SharedViewModel
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,11 +29,10 @@ class ShoeDetailsFragment : Fragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        binding = DataBindingUtil.inflate(inflater , R.layout.fragment_make_shoe, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_make_shoe, container, false)
         return binding.root
     }
 
@@ -39,20 +40,13 @@ class ShoeDetailsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel = ViewModelProvider(requireActivity()).get(SharedViewModel::class.java)
+        binding.lifecycleOwner = this
+        binding.shoe = viewModel
+
 
         binding.makeShoeBtn.setOnClickListener {
-            // get the user input
-            getData()
-            //adding shoe
-            viewModel.addShoe(
-                viewModel.name.value.toString(),
-                viewModel.size.value!!.toDouble(),
-                viewModel.brand.value.toString(),
-                viewModel.description.value.toString()
-            )
-
-            Log.i("Adham" , "list size from make shoe ${viewModel.list.value!!.size}")
-
+            //save userInput
+            viewModel.saveInput()
             val action = ShoeDetailsFragmentDirections.actionMakeShoeFragmentToShoeListFragment()
             navController.navigate(action)
         }
@@ -66,10 +60,4 @@ class ShoeDetailsFragment : Fragment() {
 
     }
 
-    fun getData() {
-        viewModel.name.value = binding.nameEditText.text.toString()
-        viewModel.brand.value = binding.brandEditText.text.toString()
-        viewModel.description.value = binding.descriptionEditText.text.toString()
-        viewModel.size.value = binding.sizeEditText.text.toString().toDouble()
-    }
 }
