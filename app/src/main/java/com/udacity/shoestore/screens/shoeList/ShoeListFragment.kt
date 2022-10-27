@@ -59,6 +59,7 @@ class ShoeListFragment : Fragment() {
 
 
 
+        Log.i("Adham", "List size from shoe list${viewModel.list.value}")
         viewModel.list.observe(requireActivity(), Observer {
             binding.linearLayoutContainer.removeAllViews()
             for (shoe in it) {
@@ -70,7 +71,6 @@ class ShoeListFragment : Fragment() {
                 binding.linearLayoutContainer.addView(card.root)
             }
         })
-        Log.i("Adham", "List size from shoe list${viewModel.list.value?.size}")
         Log.i("Adham", "number of child ${binding.linearLayoutContainer.childCount}")
         binding.addBtn.setOnClickListener {
             val action = ShoeListFragmentDirections.actionShoeListFragmentToMakeShoeFragment()
